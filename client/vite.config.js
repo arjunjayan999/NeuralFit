@@ -63,7 +63,7 @@ export default defineConfig({
 						},
 					},
 					{
-						urlPattern: /^http:\/\/localhost:5000\/api\/.*/i,
+						urlPattern: /^https?:\/\/.*\/api\/.*/i,
 						handler: "NetworkOnly",
 					},
 				],
