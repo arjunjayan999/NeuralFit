@@ -1,0 +1,7 @@
+{
+  "name": "neuralfit",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel --stream dev"
+  }
+}

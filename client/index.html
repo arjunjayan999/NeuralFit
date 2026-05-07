@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="description" content="Real-time AI-powered bodyweight exercise analysis" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="NeuralFit" />
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <title>NeuralFit</title>
+    <style>
+  #initial-loader {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: oklch(1 0 0);
+    z-index: 9999;
+  }
+  html.dark #initial-loader {
+  background: oklch(0.145 0 0);
+}
+  .zap-draw {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+    animation: draw 2.5s ease-in-out infinite;
+  }
+
+  @keyframes draw {
+    0% { stroke-dashoffset: 150; }
+    40% { stroke-dashoffset: 0; }
+    60% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -150; }
+  }
+</style>
+    <script>
+      (() => {
+        const stored = localStorage.getItem('neuralfit-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = stored || (prefersDark ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root">
+  <div id="initial-loader">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none"
+         stroke="#efb100" stroke-width="2" role="img"
+  aria-labelledby="loader-title"
+         stroke-linecap="round" stroke-linejoin="round">
+      <title id="loader-title">Loading application</title>
+      <path class="zap-draw"
+        d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+    </svg>
+  </div>
+</div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
