@@ -24,11 +24,13 @@ app.use(passport.initialize());
 app.use('/api/auth', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/settings', settingsRoutes);
-
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
+});
 app.get('/', (req, res) => {
   res.json({success:true, data: {message: 'NeuralFit API is running!'}});
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
