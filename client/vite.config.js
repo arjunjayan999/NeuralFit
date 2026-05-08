@@ -62,10 +62,10 @@ export default defineConfig({
 							},
 						},
 					},
-					{
-						urlPattern: /^https?:\/\/.*\/api\/.*/i,
-						handler: "NetworkOnly",
-					},
+					// {
+					// 	urlPattern: /^https?:\/\/.*\/api\/.*/i,
+					// 	handler: "NetworkOnly",
+					// },
 				],
 			},
 		}),
