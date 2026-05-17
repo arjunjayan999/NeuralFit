@@ -56,7 +56,11 @@ const VideoFeed = ({
 	);
 
 	return (
-		<div className="relative w-full rounded-xl overflow-hidden bg-black aspect-video">
+		<div
+	className={`relative w-full rounded-xl overflow-hidden bg-black ${
+		!hasVideoFile && !cameraReady ? "aspect-video" : ""
+	}`}
+>
 			<video
 				ref={videoRef}
 				className="w-full h-full object-contain"
