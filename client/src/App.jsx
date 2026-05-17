@@ -1,4 +1,4 @@
-import { Zap } from "lucide-react";
+
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
@@ -10,35 +10,11 @@ const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Workout = lazy(() => import("./pages/Workout"));
+const OAuthSuccess = lazy(() => import("./pages/OAuthSuccess"));
 
 import { useLocation } from "react-router-dom";
-import UseAnimationsImport from "react-useanimations";
-import loading2Import from "react-useanimations/lib/loading2";
 import RouteLoader from "./components/RouteLoader";
-
-const UseAnimations = UseAnimationsImport.default || UseAnimationsImport;
-
-const loading2 = loading2Import.default || loading2Import;
-
-const AppLoader = () => (
-	<div className="min-h-screen bg-background flex items-center justify-center">
-		<div className="flex flex-col items-center gap-4">
-			<div className="w-12 h-12 bg-transparent rounded-xl flex items-center justify-center">
-				<Zap className="w-96 h-96 text-primary-foreground zap-draw stroke-primary" />
-			</div>
-			<div className="flex items-center">
-				<UseAnimations
-					animation={loading2}
-					strokeColor="var(--background)"
-					fillColor="#efb100"
-				/>
-				<p className="text-sm pl-2 text-muted-foreground">
-					Checking Your Session
-				</p>
-			</div>
-		</div>
-	</div>
-);
+import AppLoader from "./components/AppLoader";
 
 const ProtectedRoute = ({ children }) => {
 	const { user, loading } = useAuth();
@@ -70,6 +46,14 @@ const AppRoutes = () => {
 				element={
 					<PublicRoute>
 						<Register />
+					</PublicRoute>
+				}
+			/>
+			<Route
+				path="/oauth-success"
+				element={
+					<PublicRoute>
+					    <OAuthSuccess />
 					</PublicRoute>
 				}
 			/>

@@ -4,7 +4,7 @@ import passport from 'passport';
 import User from '../models/User.js';
 import UserSettings from '../models/UserSettings.js';
 import protect from '../middleware/authMiddleware.js';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken, setTokenCookies, clearTokenCookies } from '../utils/jwt.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken, setTokenCookies, clearTokenCookies, generateOAuthExchangeToken, verifyOAuthExchangeToken } from '../utils/jwt.js';
 
 const router = express.Router();
 
@@ -157,6 +157,34 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: `${process.env.CLIENT_URL}/login?error=oauth_failed`, session: false }), async (req, res) => {
   try {    const user = req.user;
+    const exchangeToken = generateOAuthExchangeToken({
+        id: user._id
+      });
+    return res.redirect(`${process.env.CLIENT_URL}/oauth-success?exchangeToken=${exchangeToken}`);
+  } catch (err) {
+    return res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
+  }
+});
+
+router.post('/oauth/exchange', async (req, res) => {
+  try {
+    const { exchangeToken } = req.body;
+    if (!exchangeToken) {
+      return res.status(400).json({ success: false, error: 'Exchange token is required' });
+    }
+
+    let decoded;
+    try {
+      decoded = verifyOAuthExchangeToken(exchangeToken);
+    } catch (err) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired exchange token' });
+    }
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
     const accessToken = generateAccessToken({ id: user._id, email: user.email });
     const refreshToken = generateRefreshToken({ id: user._id });
 
@@ -164,9 +192,10 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
     await user.save();
 
     setTokenCookies(res, accessToken, refreshToken);
-    return res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+    return res.json({ success: true, data: {user} });
   } catch (err) {
-    return res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
+    console.error('Error during OAuth token exchange:', err);
+    res.status(500).json({ success: false, error: 'Server error' });
   }
 });
 

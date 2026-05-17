@@ -12,13 +12,23 @@ export const generateRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRY });
 };
 
+export const generateOAuthExchangeToken = (payload) => {
+  return jwt.sign(payload, process.env.JWT_OAUTH_EXCHANGE_SECRET, {
+    expiresIn: '60s'
+  });
+};
+
 export const verifyAccessToken = (token) => {
-    return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+  return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 }
 
 export const verifyRefreshToken = (token) => {
-    return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+  return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 }
+
+export const verifyOAuthExchangeToken = (token) => {
+  return jwt.verify(token, process.env.JWT_OAUTH_EXCHANGE_SECRET);
+};
 
 export const setTokenCookies = (res, accessToken, refreshToken) => {
   res.cookie('accessToken', accessToken, {
