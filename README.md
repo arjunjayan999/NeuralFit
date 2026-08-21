@@ -3,6 +3,8 @@
 A Progressive Web App that performs real-time AI-powered bodyweight exercise
 analysis using MediaPipe in the browser.
 
+https://github.com/user-attachments/assets/04d9b526-04d2-442b-8bc3-ac4fae3aaf05
+
 ## Stack
 
 **Frontend:** React, Vite, Tailwind CSS, shadcn/ui, @mediapipe/tasks-vision  
